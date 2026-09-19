@@ -5,26 +5,27 @@ def home(request):
     return render(request, 'core/index.html')
 
 def cadastro(request):
-    # Se o formulário for enviado (botão Guardar clicado)
     if request.method == 'POST':
         nome_cliente = request.POST.get('nome')
+        cpf_cliente = request.POST.get('cpf')  # Captura o novo campo CPF
         numero_processo = request.POST.get('numero')
         status_processo = request.POST.get('status')
 
-        # 1. Cria e guarda o Cliente no banco de dados
-        novo_cliente = Cliente.objects.create(nome=nome_cliente)
+        # get_or_create: Procura o cliente pelo CPF. Se não existir, cria um novo.
+        cliente_obj, created = Cliente.objects.get_or_create(
+            cpf=cpf_cliente,
+            defaults={'nome': nome_cliente}
+        )
 
-        # 2. Cria e guarda o Processo associado a esse Cliente
+        # Cria o processo e associa-o ao cliente encontrado/criado
         Processo.objects.create(
-            cliente=novo_cliente,
+            cliente=cliente_obj,
             numero=numero_processo,
             status=status_processo
         )
 
-        # Redireciona para a página de consultas para ver o novo registo
         return redirect('consulta')
 
-    # Se for apenas para aceder à página, mostra o formulário vazio
     return render(request, 'core/cadastro.html')
 
 def consulta(request):
