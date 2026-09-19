@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="bg-white p-5 rounded-3 shadow-sm border">
+    <h2 class="text-success mb-4"><i class="fa-solid fa-file-signature"></i> Efetuar Cadastro</h2>
+    
+    <!-- Formulário Visual (pronto para ser ligado ao banco de dados futuramente) -->
+    <form>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Nome do Cliente</label>
+                <input type="text" class="form-control" placeholder="Ex: João Silva">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Número do Processo</label>
+                <input type="text" class="form-control" placeholder="0000000-00.0000.0.00.0000">
+            </div>
+        </div>
+        <div class="mb-4">
+            <label class="form-label fw-bold">Situação Atual</label>
+            <select class="form-select">
+                <option>Ativo</option>
+                <option>Suspenso</option>
+                <option>Concluído</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-success btn-lg"><i class="fa-solid fa-save"></i> Guardar Registo</button>
+        <a href="/" class="btn btn-outline-secondary btn-lg ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
