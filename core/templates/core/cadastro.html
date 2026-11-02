@@ -4,9 +4,8 @@
 <div class="bg-white p-5 rounded-3 shadow-sm border">
     <h2 class="text-success mb-4"><i class="fa-solid fa-file-signature"></i> Efetuar Cadastro</h2>
     
-    <!-- Formulário agora configurado para enviar dados por POST -->
     <form method="POST">
-        {% csrf_token %} <!-- Código de segurança obrigatório do Django -->
+        {% csrf_token %}
         
         <div class="row">
             <div class="col-md-4 mb-3">
@@ -15,7 +14,6 @@
             </div>
             <div class="col-md-4 mb-3">
                 <label class="form-label fw-bold">CPF</label>
-                <!-- Novo campo CPF -->
                 <input type="text" name="cpf" class="form-control" required placeholder="Apenas números">
             </div>
             <div class="col-md-4 mb-3">
@@ -23,19 +21,46 @@
                 <input type="text" name="numero" class="form-control" required placeholder="0000000-00.0000.0.00.0000">
             </div>
         </div>
+
+        <div class="row mt-2">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">Data do Processo</label>
+                <input type="date" name="data" class="form-control" required>
+            </div>
+            <div class="col-md-8 mb-3">
+                <label class="form-label fw-bold">Situação Atual (Status)</label>
+                <select name="status" id="statusSelect" class="form-select" onchange="atualizarDescricaoStatus()">
+                    <option value="Pré-processual / Aguardando Distribuição" data-desc="Caso cadastrado, em fase de coleta de documentos ou elaboração da petição inicial.">Pré-processual / Aguardando Distribuição</option>
+                    <option value="Ativo / Em Andamento" selected data-desc="Processo distribuído e tramitando regularmente na instância de origem.">Ativo / Em Andamento</option>
+                    <option value="Com Prazo em Aberto" data-desc="Exige manifestação ou providência da equipe jurídica dentro de um prazo legal.">Com Prazo em Aberto</option>
+                    <option value="Concluso" data-desc="Autos enviados ao magistrado aguardando despacho, decisão interlocutória ou sentença.">Concluso</option>
+                    <option value="Em Grau de Recurso" data-desc="Processo em análise nos tribunais de segunda instância ou tribunais superiores.">Em Grau de Recurso</option>
+                    <option value="Em Cumprimento de Sentença / Execução" data-desc="Fase de cobrança de valores ou efetivação prática do direito reconhecido.">Em Cumprimento de Sentença / Execução</option>
+                    <option value="Suspenso / Sobrestado" data-desc="Tramitação pausada temporariamente por acordo, repercussão geral ou ordem judicial.">Suspenso / Sobrestado</option>
+                    <option value="Acordo Homologado" data-desc="Conflito resolvido por composição amigável, aguardando quitação das obrigações.">Acordo Homologado</option>
+                    <option value="Encerrado / Arquivado" data-desc="Processo finalizado definitivamente após o trânsito em julgado e baixa.">Encerrado / Arquivado</option>
+                </select>
+                <div id="statusHelp" class="form-text text-muted mt-1">
+                    <i class="fa-solid fa-circle-info"></i> <span>Processo distribuído e tramitando regularmente na instância de origem.</span>
+                </div>
+            </div>
         </div>
-        <div class="mb-4">
-            <label class="form-label fw-bold">Situação Atual</label>
-            <!-- Atributo name="status" adicionado -->
-            <select name="status" class="form-select">
-                <option value="Ativo">Ativo</option>
-                <option value="Suspenso">Suspenso</option>
-                <option value="Concluído">Concluído</option>
-            </select>
+
+        <div class="mb-4 mt-2">
+            <label class="form-label fw-bold">Observações do Processo</label>
+            <textarea name="observacoes" class="form-control" rows="3" placeholder="Digite detalhes, prazos, pendências ou observações importantes sobre o processo..."></textarea>
         </div>
-        <!-- Botão alterado para type="submit" para submeter o formulário -->
+
         <button type="submit" class="btn btn-success btn-lg"><i class="fa-solid fa-save"></i> Guardar Registo</button>
         <a href="/" class="btn btn-outline-secondary btn-lg ms-2">Cancelar</a>
     </form>
 </div>
+
+<script>
+function atualizarDescricaoStatus() {
+    const select = document.getElementById('statusSelect');
+    const desc = select.options[select.selectedIndex].getAttribute('data-desc');
+    document.querySelector('#statusHelp span').textContent = desc;
+}
+</script>
 {% endblock %}
